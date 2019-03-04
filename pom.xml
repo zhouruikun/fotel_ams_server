@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
@@ -79,7 +80,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <fork>true</fork>
+
                 </configuration>
             </plugin>
         </plugins>

@@ -18,6 +18,7 @@ public class CorsConfig {
         config.addAllowedOrigin("http://localhost:7529");
         config.addAllowedOrigin("http://106.14.226.150:7529");
         config.addAllowedOrigin("http://47.100.122.195:7529");
+        config.addAllowedOrigin("http://0.0.0.0:7529");
         // 如果要限制 HEADER 或 METHOD 请自行更改
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");

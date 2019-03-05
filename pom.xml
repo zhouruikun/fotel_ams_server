@@ -71,6 +71,11 @@
             <version>2.3</version>
             <scope>compile</scope>
         </dependency>
+                <!--mongo-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
 
     </dependencies>
 

@@ -16,7 +16,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ParamInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/user/login")
-                .excludePathPatterns("/swagger-ui.html/**"); //匹配不过滤的路径。密码还要修改呢，所以这个路径不能拦截;
+                .excludePathPatterns("/**")
+                .excludePathPatterns("/webjars/**"); //匹配不过滤的路径。密码还要修改呢，所以这个路径不能拦截;
 
         }
 }

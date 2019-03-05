@@ -45,7 +45,7 @@ public class Node {
     public void setMac(String mac) {
         this.mac = mac;
     }
-    @Column(name = "remark", nullable = false)
+    @Column(name = "remark", nullable = true)
     public String getRemark() {
         return remark;
     }
@@ -54,7 +54,7 @@ public class Node {
         this.remark = remark;
     }
 
-    @Column(name = "unit", nullable = false)
+    @Column(name = "unit", nullable = true)
     public String getUnit() {
         return unit;
     }
@@ -64,7 +64,7 @@ public class Node {
         this.unit = unit;
     }
 
-    @Column(name = "arial_name", nullable = false)
+    @Column(name = "arial_name", nullable = true)
     public String getArialName() {
         return arialName;
     }
@@ -80,7 +80,7 @@ public class Node {
     public void setType(String type) {
         this.type = type;
     }
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = true)
     public String getStatus() {
         return status;
     }

@@ -46,7 +46,7 @@ public class NodeDataController {
             {
 
                 NodeDataPoint points = new NodeDataPoint();
-                points.setT(item.getUpdateTime()-cnt);
+                points.setT(item.getUpdateTime()-(item.getNodeDataCounts()-cnt));
                 points.setK(item.getData().getAms5915_t()[cnt-1]);
                 points.setS(item.getData().getAms5915_p()[cnt-1]);
                 nodeDataList.add(points);

@@ -1,7 +1,14 @@
 package com.companyname.springbootcrudrest.model;
 
+import com.companyname.springbootcrudrest.util.DoubleSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 public class NodeData {
+
+    @JsonSerialize(using = DoubleSerialize.class)
     double [] ams5915_p;
+
+    @JsonSerialize(using = DoubleSerialize.class)
     double [] ams5915_t;
 
     public double[] getAms5915_p() {

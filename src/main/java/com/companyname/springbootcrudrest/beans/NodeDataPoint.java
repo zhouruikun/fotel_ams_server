@@ -1,31 +1,31 @@
 package com.companyname.springbootcrudrest.beans;
 
 public class NodeDataPoint {
-    int time ;
-    double temperature;
-    double stress;
+    int t;
+    double K;
+    double s;
 
-    public int getTime() {
-        return time;
+    public double getK() {
+        return K;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setK(double k) {
+        this.K = k;
     }
 
-    public double getTemperature() {
-        return temperature;
+    public int getT() {
+        return t;
     }
 
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
+    public void setT(int t) {
+        this.t = t;
     }
 
-    public double getStress() {
-        return stress;
+    public double getS() {
+        return s;
     }
 
-    public void setStress(double stress) {
-        this.stress = stress;
+    public void setS(double s) {
+        this.s = s;
     }
 }

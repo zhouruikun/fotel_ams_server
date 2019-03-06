@@ -2,7 +2,6 @@ package com.companyname.springbootcrudrest.controller;
 
 import com.companyname.springbootcrudrest.beans.NodeDataArray;
 import com.companyname.springbootcrudrest.beans.NodeDataPoint;
-import com.companyname.springbootcrudrest.beans.NodeDataQuerys;
 import com.companyname.springbootcrudrest.beans.ResponseCommon;
 import com.companyname.springbootcrudrest.model.Node;
 import com.companyname.springbootcrudrest.model.NodeDataItem;
@@ -47,9 +46,9 @@ public class NodeDataController {
             {
 
                 NodeDataPoint points = new NodeDataPoint();
-                points.setTime(item.getUpdateTime()-cnt);
-                points.setTemperature(item.getData().getAms5915_t()[cnt-1]);
-                points.setStress(item.getData().getAms5915_p()[cnt-1]);
+                points.setT(item.getUpdateTime()-cnt);
+                points.setK(item.getData().getAms5915_t()[cnt-1]);
+                points.setS(item.getData().getAms5915_p()[cnt-1]);
                 nodeDataList.add(points);
             }
         }

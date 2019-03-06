@@ -22,6 +22,23 @@ public class NodeDataController {
     private NodeRepository nodeRepository;
 
 
+    @GetMapping("/get_data_realtime")
+    public ResponseCommon getdata( @RequestParam(value = "mac") String mac,@RequestParam(value = "endTime") int time) {
+        //获取到JSONObjec
+        //判断是否已存在的节点  不存在则添加
+
+        NodeDataItem  item = nodeDataRepository.findFirstByNodeMacOrderByUpdateTimeDesc(mac);
+        NodeDataPoint points = new NodeDataPoint();
+        points.setT(item.getUpdateTime());
+        points.setK(item.getData().getAms5915_t());
+        points.setS(item.getData().getAms5915_p());
+        ResponseCommon res = new ResponseCommon();
+        res.setCode(20000);
+        res.setData(points);
+        res.setMessage("ok");
+        return res;
+    }
+
 
 
     @GetMapping("/get_data")
@@ -42,15 +59,14 @@ public class NodeDataController {
         ArrayList<NodeDataPoint> nodeDataList = new ArrayList<>();
 
         for (NodeDataItem item:items  ) {
-            for (int cnt = item.getNodeDataCounts(); cnt>0; cnt--)
-            {
+
 
                 NodeDataPoint points = new NodeDataPoint();
-                points.setT(item.getUpdateTime()-(item.getNodeDataCounts()-cnt));
-                points.setK(item.getData().getAms5915_t()[cnt-1]);
-                points.setS(item.getData().getAms5915_p()[cnt-1]);
+                points.setT(item.getUpdateTime());
+                points.setK(item.getData().getAms5915_t());
+                points.setS(item.getData().getAms5915_p());
                 nodeDataList.add(points);
-            }
+
         }
         endtinme=System.currentTimeMillis();
         long costTimedata = (endtinme - begintime);

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NodeDataRepository extends MongoRepository<NodeDataItem, String> {
-    NodeDataItem[] findByNodeMac(String mac);
     NodeDataItem[] findByNodeMacAndUpdateTimeBetween(String mac,int start, int end);
+    NodeDataItem findFirstByNodeMacOrderByUpdateTimeDesc(String mac);
+
+
 }

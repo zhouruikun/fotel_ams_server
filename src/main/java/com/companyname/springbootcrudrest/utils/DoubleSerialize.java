@@ -1,4 +1,4 @@
-package com.companyname.springbootcrudrest.util;
+package com.companyname.springbootcrudrest.utils;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

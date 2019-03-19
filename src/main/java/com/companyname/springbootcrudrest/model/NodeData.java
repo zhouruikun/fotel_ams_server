@@ -1,6 +1,6 @@
 package com.companyname.springbootcrudrest.model;
 
-import com.companyname.springbootcrudrest.util.DoubleSerialize;
+import com.companyname.springbootcrudrest.utils.DoubleSerialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class NodeData {

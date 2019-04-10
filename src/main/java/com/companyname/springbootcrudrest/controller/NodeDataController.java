@@ -91,7 +91,7 @@ public class NodeDataController {
         Node node = nodeRepository.findByMac(mac);
         SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         try {
-            File file = File.createTempFile(node.getArialName() + ":" + fdate.format(new Date(startTime * 1000l)) + "至"
+            File file = File.createTempFile(node.getArialName() + "-" + fdate.format(new Date(startTime * 1000l)) + "至"
                     + fdate.format(new Date(endTime * 1000l)), ".csv");
             CsvWriter csvWriter = new CsvWriter(file.getCanonicalPath(), ',', Charset.forName("UTF-8"));
             csvWriter.writeRecord(new String[]{"Time", "Temperature", "Wind Speed"});
@@ -118,7 +118,7 @@ public class NodeDataController {
         } catch (IOException e) {
             e.printStackTrace();
         }
- 
+
     }
 
 

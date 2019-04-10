@@ -50,12 +50,8 @@ public class NodeDataController {
                                    @RequestParam(value = "mac") String mac) {
         //获取到JSONObjec
         //判断是否已存在的节点  不存在则添加
-
-
         long begintime = System.currentTimeMillis();
-
         NodeDataItem [] items = nodeDataRepository.findByNodeMacAndUpdateTimeBetween(mac,startTime,endTime);
-
 
         long endtinme=System.currentTimeMillis();
 
@@ -85,13 +81,22 @@ public class NodeDataController {
     @GetMapping("/download_data")
     public void download_data(HttpServletResponse response, @RequestParam(value = "endTime") int endTime, @RequestParam(value = "startTime") int startTime,
                               @RequestParam(value = "mac") String mac)throws Exception {
+
+        //判断是否已存在的节点  不存在则添加
+        long begintime = System.currentTimeMillis();
+
         ExcelData data = new ExcelData();
         data.setName("用户信息数据");
         //获取到JSONObjec
-        //判断是否已存在的节点  不存在则添加
         NodeDataItem [] items = nodeDataRepository.findByNodeMacAndUpdateTimeBetween(mac,startTime,endTime);
+        Node node = nodeRepository.findByMac(mac);
 
+        long endtinme=System.currentTimeMillis();
+        long costTimequery = (endtinme - begintime);
+        System.out.println("get data from database"+costTimequery);
+        begintime = endtinme;
         //添加表头
+
         List<String> titles = new ArrayList();
         //for(String title: excelInfo.getNames())
         titles.add("时间");
@@ -111,14 +116,18 @@ public class NodeDataController {
         }
         //添加列
         data.setRows(nodeDataList);
+        String fileName=node.getArialName()+":"+fdate.format(new Date(startTime*1000l))+"至"+fdate.format(new Date(endTime*1000l))+".xlsx";
 
-        String fileName=fdate.format(new Date(startTime*1000l))+"至"+fdate.format(new Date(endTime*1000l))+".xlsx";
+        endtinme=System.currentTimeMillis();
+        costTimequery = (endtinme - begintime);
+        System.out.println("passdata to excel"+costTimequery);
+        begintime = endtinme;
+
         ExcelUtils.exportExcel(response, fileName, data);
-        ResponseCommon res = new ResponseCommon();
-        res.setCode(20000);
-        res.setData(null);
-        res.setMessage("ok");
-//        return res;
+
+        endtinme=System.currentTimeMillis();
+        costTimequery = (endtinme - begintime);
+        System.out.println("write to client"+costTimequery);
     }
 
 

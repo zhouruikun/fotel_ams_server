@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.round;
+
 @RestController
 @RequestMapping("/")
 public class NodeDataController {
@@ -82,6 +85,18 @@ public class NodeDataController {
         return res;
     }
 
+    private double get_stress(double speed) {
+
+        if (speed > 0) {
+
+            return round(pow(((speed / 100.0 + 0.2) / 0.83), 2) * 1.293 / 2);
+        } else {
+            return -round(pow(((speed / 100.0 + 0.2) / 0.83), 2) * 1.293 / 2);
+        }
+
+
+    }
+
     @GetMapping("/download_data")
     public void download_data(HttpServletResponse response, @RequestParam(value = "endTime") int endTime,
                               @RequestParam(value = "startTime") int startTime,
@@ -91,16 +106,21 @@ public class NodeDataController {
         Node node = nodeRepository.findByMac(mac);
         SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         try {
-            File file = File.createTempFile(node.getArialName() + "-" + fdate.format(new Date(startTime * 1000l)) + "至"
-                    + fdate.format(new Date(endTime * 1000l)), ".csv");
+            String fileName = node.getArialName() + "-" + fdate.format(new Date(startTime * 1000l)) + "至"
+                    + fdate.format(new Date(endTime * 1000l)) + "-";
+            File file = File.createTempFile(fileName, ".csv");
             CsvWriter csvWriter = new CsvWriter(file.getCanonicalPath(), ',', Charset.forName("UTF-8"));
-            csvWriter.writeRecord(new String[]{"Time", "Temperature", "Wind Speed"});
+            csvWriter.writeRecord(new String[]{"Time", "Temperature", "Wind Speed", "Wind Stress"});
 
             for (NodeDataItem item : items) {
                 long ts = item.getUpdateTime() * 1000l;
                 csvWriter.writeRecord(new String[]{fdate.format(ts),
                         String.valueOf(item.getData().getAms5915_t() / 100.0),
-                        String.valueOf(item.getData().getAms5915_p() / 100.0)});
+                        String.valueOf(item.getData().getAms5915_p() / 100.0),
+                        String.valueOf(get_stress(item.getData().getAms5915_p()))});
+                ;
+
+
             }
 
             csvWriter.close();
@@ -108,6 +128,7 @@ public class NodeDataController {
             response.setContentType("application/csv; charset=utf-8");
             response.setHeader("Content-Disposition", "attachment; filename=" +
                     URLEncoder.encode(file.getName(), "utf-8"));
+
             InputStream in = new FileInputStream(file);
             OutputStream out = response.getOutputStream();
             int len;

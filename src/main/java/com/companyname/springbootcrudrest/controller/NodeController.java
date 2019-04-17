@@ -7,6 +7,10 @@ import com.companyname.springbootcrudrest.exception.ResourceNotFoundException;
 import com.companyname.springbootcrudrest.model.Node;
 import com.companyname.springbootcrudrest.repository.NodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +28,25 @@ public class NodeController {
     private NodeRepository nodeRepository;
 
     @GetMapping("/nodes")
-    public ResponseCommon getAllNodes() {
+    public ResponseCommon getAllNodes(
+            @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "limit", required = false) Integer limit
+            , @RequestParam(value = "sort", required = false) String sort
+    ) {
         ResponseCommon res = new ResponseCommon();
         NodeList list = new NodeList();
-        List listNode = nodeRepository.findAll();
-        list.setItems(listNode);
-        list.setTotal(listNode.size());
+
+        Pageable pageable;
+        if (!sort.contains("-")) {
+            pageable = PageRequest.of(page - 1, limit, Sort.Direction.ASC, "id");
+        } else {
+            pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
+        }
+
+        Page<Node> listNode = nodeRepository.findAll(pageable);
+        list.setItems(listNode.getContent());
+        list.setTotal((int) listNode.getTotalElements());
+
+
         res.setCode(20000);
         res.setMessage("success");
         res.setData(list);

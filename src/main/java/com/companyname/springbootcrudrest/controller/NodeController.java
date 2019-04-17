@@ -36,7 +36,7 @@ public class NodeController {
         return res;
     }
 
-    @GetMapping("/nodes/{id}")
+    @GetMapping("/node/{id}")
     public ResponseEntity<Node> getNodeById(
             @PathVariable(value = "id") Long nodeId) throws ResourceNotFoundException {
         Node node = nodeRepository.findById(nodeId)
@@ -44,12 +44,12 @@ public class NodeController {
         return ResponseEntity.ok().body(node);
     }
 
-    @PostMapping("/nodes")
+    @PostMapping("/node")
     public Node createNode(@Valid @RequestBody Node node) {
         return nodeRepository.save(node);
     }
 
-    @PutMapping("/nodes/{id}")
+    @PutMapping("/node/{id}")
     public ResponseCommon updateNode(
             @PathVariable(value = "id") Long nodeId,
             @Valid @RequestBody Node nodeDetails) throws ResourceNotFoundException {
@@ -65,14 +65,14 @@ public class NodeController {
     }
 
     @DeleteMapping("/node/{id}")
-    public Map<String, Boolean> deleteNode(
+    public ResponseCommon deleteNode(
             @PathVariable(value = "id") Long nodeId) throws Exception {
         Node node = nodeRepository.findById(nodeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Node not found on :: " + nodeId));
-
+        ResponseCommon res = new ResponseCommon();
         nodeRepository.delete(node);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        res.setCode(20000);
+        res.setMessage("deleteNode success");
+        return res;
     }
 }

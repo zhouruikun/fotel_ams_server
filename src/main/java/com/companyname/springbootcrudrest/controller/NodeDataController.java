@@ -118,9 +118,6 @@ public class NodeDataController {
                         String.valueOf(item.getData().getAms5915_t() / 100.0),
                         String.valueOf(item.getData().getAms5915_p() / 100.0),
                         String.valueOf(get_stress(item.getData().getAms5915_p()))});
-                ;
-
-
             }
 
             csvWriter.close();
@@ -149,14 +146,21 @@ public class NodeDataController {
         //判断是否已存在的节点  不存在则添加
 
         ResponseCommon res = new ResponseCommon();
-        if (nodeRepository.findByMac(date.getNodeMac()) == null) {
-            Node node = new Node();
+        Node node = nodeRepository.findByMac(date.getNodeMac());
+        if (node == null) {
+            node = new Node();
             node.setArialName("未命名");
             node.setMac(date.getNodeMac());
             node.setType(date.getNodeType());
+            node.setPhone("13575404606");
             node.setStatus("ONLINE");
             node.setCreatedBy("UPLOAD");
             nodeRepository.save(node);
+        } else {
+            if (node.getStatus().equals("OFFLINE")) {
+                node.setStatus("ONLINE");
+                nodeRepository.save(node);
+            }
         }
         nodeDataRepository.save(date);
         res.setCode(20000);

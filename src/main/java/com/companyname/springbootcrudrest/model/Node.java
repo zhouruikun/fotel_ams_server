@@ -24,6 +24,7 @@ public class Node {
     private String remark;
     private String type;
     private String status;
+    private String phone;
     private Date createdAt;
     private String createdBy;
     private Date updatedAt;
@@ -86,6 +87,14 @@ public class Node {
     }
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Column(name = "phone", nullable = true)
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Column(name = "created_at", nullable = false)

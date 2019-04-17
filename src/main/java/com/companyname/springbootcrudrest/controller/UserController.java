@@ -30,8 +30,17 @@ import com.companyname.springbootcrudrest.repository.UserRepository;
 @Api(value="usert Management System", description="Operations pertaining to user in user Management System")
 public class UserController {
 
+
+
+
     @Autowired
     private UserRepository userRepository;
+
+
+    public String getUsers() {
+        return "Hello Spring Security";
+    }
+
 
     @ApiOperation(value = "View a list of available employees", response = List.class)
     @ApiResponses(value = {

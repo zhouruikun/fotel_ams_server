@@ -144,7 +144,7 @@ public class NodeDataController {
     public ResponseCommon putdata(@RequestBody(required = false) NodeDataItem date) {
         //获取到JSONObjec
         //判断是否已存在的节点  不存在则添加
-
+        System.out.println("get data from :"+date.getNodeMac()+" at "+date.getUpdateTime());
         ResponseCommon res = new ResponseCommon();
         Node node = nodeRepository.findByMac(date.getNodeMac());
         if (node == null) {
@@ -156,6 +156,7 @@ public class NodeDataController {
             node.setStatus("ONLINE");
             node.setCreatedBy("UPLOAD");
             nodeRepository.save(node);
+
         } else {
             if (node.getStatus().equals("OFFLINE")) {
                 node.setStatus("ONLINE");

@@ -36,37 +36,41 @@ public class ScheduleTask {
     public void configureTasks() {
         //判断报警
         List listNode = nodeRepository.findAll();
-        if (listNode==null)
-        {
-            return ;
-        }
-        Iterator<Node> iter = listNode.iterator();
-        while (iter.hasNext()) {  //执行过程中会执行数据锁定，性能稍差，若在循环过程中要去掉某个元素只能调用iter.remove()方法。
-            Node node = iter.next();
-            NodeDataItem item = nodeDataRepository.
-                    findFirstByNodeMacOrderByUpdateTimeDesc(node.getMac());
-            Date date = new Date();
-            long inter = date.getTime() ;
-                    inter -=  item.getUpdateTime() * 1000l;
-            if ((inter > (6 * 1000 * 60))&&(node.getStatus().equals("ONLINE"))) {
-                //触发离线报警
-                Date date_off = new Date(item.getUpdateTime() * 1000l);
-                node.setStatus("OFFLINE");
-                nodeRepository.save(node);
-                Calendar ca = Calendar.getInstance();
-                ca.setTime(date_off);
-                int year =ca.get(Calendar.YEAR);//获取年份
-                int month=ca.get(Calendar.MONTH)+1;//获取月份
-                int day=ca.get(Calendar.DATE);//获取日 
-                int hour=ca.get(Calendar.HOUR_OF_DAY);//小时    
+        try{
+            Iterator<Node> iter = listNode.iterator();
+            while (iter.hasNext()) {  //执行过程中会执行数据锁定，性能稍差，若在循环过程中要去掉某个元素只能调用iter.remove()方法。
+                Node node = iter.next();
+                NodeDataItem item = nodeDataRepository.
+                        findFirstByNodeMacOrderByUpdateTimeDesc(node.getMac());
+                Date date = new Date();
+                long inter = date.getTime() ;
+                inter -=  item.getUpdateTime() * 1000l;
+                if ((inter > (6 * 1000 * 60))&&(node.getStatus().equals("ONLINE"))) {
+                    //触发离线报警
+                    Date date_off = new Date(item.getUpdateTime() * 1000l);
+                    node.setStatus("OFFLINE");
+                    nodeRepository.save(node);
+                    Calendar ca = Calendar.getInstance();
+                    ca.setTime(date_off);
+                    int year =ca.get(Calendar.YEAR);//获取年份
+                    int month=ca.get(Calendar.MONTH)+1;//获取月份
+                    int day=ca.get(Calendar.DATE);//获取日 
+                    int hour=ca.get(Calendar.HOUR_OF_DAY);//小时    
 //                System.out.println(year+"  "+month+"  "+day+"  "+ hour+"");
-                String[] phones = node.getPhone().split(",");
-                SmsAlert.sendToAll(phones,new String[]{node.getArialName(),
-                     "风压",year+"",month+"",day+"",
-                        hour+""
-                },SmsAlert.TEMPLATE_ID_OFFLINE);
+                    String[] phones = node.getPhone().split(",");
+                    SmsAlert.sendToAll(phones,new String[]{node.getArialName(),
+                            "风压",year+"",month+"",day+"",
+                            hour+""
+                    },SmsAlert.TEMPLATE_ID_OFFLINE);
+                }
             }
         }
+        catch (Exception e)
+        {
+
+        }
+
+
     }
 //    @Async
 //    @Scheduled(fixedDelay = 1000)  //间隔1秒

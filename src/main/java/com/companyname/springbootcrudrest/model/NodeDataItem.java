@@ -1,9 +1,19 @@
 package com.companyname.springbootcrudrest.model;
 
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.Indexed;
+
+@CompoundIndexes(
+        {
+                @CompoundIndex(name = "nodeMac_updateTime",def = "{'nodeMac':1,'updateTime':1}")
+        })
 public class NodeDataItem {
 
     private String id;
+    @Indexed
     private String nodeMac;
+    @Indexed
     private int updateTime;
     private String nodeType;
     private int nodeDataCounts;

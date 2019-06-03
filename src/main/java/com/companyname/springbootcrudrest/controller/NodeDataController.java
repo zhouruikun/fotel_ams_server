@@ -145,6 +145,14 @@ public class NodeDataController {
         //获取到JSONObjec
         //判断是否已存在的节点  不存在则添加
         System.out.println("get data from :"+date.getNodeMac()+" at "+date.getUpdateTime());
+        //如果时间戳异常 就用服务器的时间戳
+
+        if(date.getUpdateTime()<100000)
+        {
+            Date date_server= new Date();
+            long time = date_server.getTime()/1000;
+            date.setUpdateTime((int)time);
+        }
         ResponseCommon res = new ResponseCommon();
         Node node = nodeRepository.findByMac(date.getNodeMac());
         if (node == null) {

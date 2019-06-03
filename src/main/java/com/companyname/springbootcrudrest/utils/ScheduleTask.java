@@ -36,6 +36,10 @@ public class ScheduleTask {
     public void configureTasks() {
         //判断报警
         List listNode = nodeRepository.findAll();
+        if (listNode==null)
+        {
+            return ;
+        }
         Iterator<Node> iter = listNode.iterator();
         while (iter.hasNext()) {  //执行过程中会执行数据锁定，性能稍差，若在循环过程中要去掉某个元素只能调用iter.remove()方法。
             Node node = iter.next();
